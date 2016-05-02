@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<vxml version="2.1" xmlns="http://www.w3.org/2001/vxml" xmlns:voxeo="http://community.voxeo.com/xmlns/vxml">
+
+<meta name="maintainer" content="askemailer@gmail.com"/>
+
+
+<link next="#MainMenu">
+
+  <!-- The XML grammar for the main menu. -->
+  <grammar xml:lang="en-US" root ="LINKGRAM">
+     <rule id="LINKGRAM" scope="public">
+      <one-of>
+       <item>main</item>
+       <item>back</item>
+       <item>begin</item>
+      </one-of>
+     
+     </rule>
+    </grammar> 
+</link>
+
+  <form id="MainMenu">
+    <block>
+      <prompt bargein="false">
+        Welcome to the Mali Milk Service
+      </prompt>
+    </block>
+
+    <field name="BuyOrSell">
+      <prompt>
+        Would you like to "buy" or "sell" milk?
+      </prompt>
+
+      <!-- Grammar for available responses for either "Buyer" or "Seller".-->
+      <grammar xml:lang="en-US" root = "BUYORSELL">
+        <rule id="BUYORSELL" scope="public">
+         <one-of>
+      
+         <!-- If the user says any of the following choices, then the grammar assigns "buy" to -->
+         <!-- the BuyOrSell variable. -->
+         <item>
+          <one-of>
+            <item>buy</item>
+            <item>purchase</item>
+            <item>order</item>
+          </one-of>
+          <tag>out.BuyOrSell ="buy";</tag>
+         </item>
+       
+         <!-- If the user says any of the following choices, then the grammar assigns "sell" to -->
+         <!-- the BuyOrSell variable. -->
+         <item>
+          <one-of>
+            <item>sell</item>
+            <item>farmer</item>
+            <item>seller</item>
+          </one-of>
+          <tag>out.BuyOrSell ="sell";</tag>
+         </item>
+      
+         </one-of>        
+        </rule>
+      </grammar>
+        
+      <noinput>
+        <prompt>
+          I did not hear anything. Please try again.
+        </prompt>
+       <reprompt/>
+      </noinput>
+
+      <nomatch>
+        <prompt>
+          I did not recognize that, please try again. 
+        </prompt>
+       <reprompt/>
+      </nomatch>
+
+    </field>
+    
+    
+    <filled>
+        <if cond="BuyOrSell == 'buy'">
+            <goto next="#Buy"/>
+        <elseif cond="BuyOrSell == 'sell'"/>
+            <goto next="#Sell"/>
+        </if>
+    </filled>
+  </form>
+
+  <!-- If the answer was "buy", it prompts the following statement. -->
+  <form id="Buy">
+    <field name="BackToMain">
+    <prompt>
+      Please listen to the following offerings from farmers. 
+    </prompt>
+    </field>
+    <filled>
+    <!-- This will never get hit. -->
+    </filled>
+  </form>
+
+  <!-- If the answer was "sell", it prompts the following statement. -->
+  <form id="Sell">
+    <field name="BackToMain">
+    <block>
+      <prompt>
+        Please leave a message after the prompt with your name, phone number, where you live, and how much milk you have available. 
+      </prompt>
+      <record name="message" beep="true" maxtime="60s">
+            <prompt>Please leave your message after the beep, then press any key.</prompt>
+        </record>
+        <block>
+            <prompt>Here's what you recorded <value expr="message"/>.</prompt>
+        </block>
+        <block>
+            <submit next="Record_Upload_HTTP_POST.php" enctype="multipart/form-data" method="post"/>
+      </block>
+        <filled>
+        <!-- This will never get hit. -->
+        </filled>
+  </form>
+</vxml>
+
+
