@@ -5,10 +5,10 @@ from path import path
 from flask import Flask, url_for, request, redirect, render_template
 # from werkzeug import secure_filename
 
-UPLOAD_FOLDER = '/home/ubuntu/workspace/flask_init/static/messages'
+UPLOAD_FOLDER = '/var/www/KasaDaka/FlaskKasadaka/templates/flask_init/static/messages'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'wav'])
 
-messages_dir = '/home/ubuntu/workspace/flask_init/static/messages'
+messages_dir = '/var/www/KasaDaka/FlaskKasadaka/templates/flask_init/static/messages'
 
 # Create an instance of the Flask Class
 app = Flask(__name__)
