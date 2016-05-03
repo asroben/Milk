@@ -22,21 +22,21 @@ def allowed_file(filename):
 @app.route('/voice')
 @app.route('/home')
 def index():
-    #Change the DAYS based on farmer feedback
-    DAYS = 5
-    removed = 0
-    d = path(messages_dir)
-    time_in_secs = time.time() - (DAYS * 24 * 60 * 60)
+    # #Change the DAYS based on farmer feedback
+    # DAYS = 5
+    # removed = 0
+    # d = path(messages_dir)
+    # time_in_secs = time.time() - (DAYS * 24 * 60 * 60)
    
-    # For each file in messages directory check if it should be removed
-    for i in d.walk():
-        print(time.ctime(os.path.getmtime(i)))
-        if i.isfile():
-            # If file is older than DAYS, remove it
-            if i.mtime <= time_in_secs:
-                i.remove()
-                removed += 1
-    print(removed)
+    # # For each file in messages directory check if it should be removed
+    # for i in d.walk():
+    #     print(time.ctime(os.path.getmtime(i)))
+    #     if i.isfile():
+    #         # If file is older than DAYS, remove it
+    #         if i.mtime <= time_in_secs:
+    #             i.remove()
+    #             removed += 1
+    # print(removed)
     return render_template("main.xml")
 
 @app.route('/voice/english')
