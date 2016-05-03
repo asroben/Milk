@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<vxml version="2.1" xmlns="http://www.w3.org/2001/vxml" xmlns:voxeo="http://community.voxeo.com/xmlns/vxml">
+
+<meta name="maintainer" content="askemailer@gmail.com"/>
+  
+  <!-- If the answer was "sell", it prompts the following statement. -->
+  <form id="Sell">
+        <block>
+            <prompt>Message Not Received</prompt>
+        </block>
+    </form>
+</vxml>

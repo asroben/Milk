@@ -5,102 +5,6 @@
 
 <meta name="maintainer" content="askemailer@gmail.com"/>
 
-
-<link next="#MainMenu">
-
-  <!-- The XML grammar for the main menu. -->
-  <grammar xml:lang="en-US" root ="LINKGRAM">
-     <rule id="LINKGRAM" scope="public">
-      <one-of>
-       <item>main</item>
-       <item>back</item>
-       <item>begin</item>
-      </one-of>
-     
-     </rule>
-    </grammar> 
-</link>
-
-  <form id="MainMenu">
-    <block>
-      <prompt bargein="false">
-        Welcome to the Mali Milk Service
-      </prompt>
-    </block>
-
-    <!-- Language Selection Menu -->
-     <field name="Language">
-      <prompt>
-        For English say "English", for French say "French", for Danish say "Danish"
-      </prompt>
-
-      <!-- Grammar for available responses for either "Buyer" or "Seller".-->
-      <grammar xml:lang="en-US" root = "LANGUAGE">
-        <rule id="LANGUAGE" scope="public">
-         <one-of>
-      
-         <!-- If the user says any of the following choices, then the grammar assigns "english" to the Language variable.-->
-         <item>
-          <one-of>
-            <item>English</item>
-          </one-of>
-          <tag>out.Language ="english";</tag>
-         </item>
-       
-         <!-- If the user says any of the following choices, then the grammar assigns "french" to the Language variable. -->
-         <item>
-          <one-of>
-            <item>French</item>
-          </one-of>
-          <tag>out.Language ="french";</tag>
-         </item>
-         
-          <!-- If the user says any of the following choices, then the grammar assigns "danish" to the Language variable. -->
-         <item>
-          <one-of>
-            <item>Danish</item>
-          </one-of>
-          <tag>out.Language ="danish";</tag>
-         </item>
-      
-         </one-of>        
-        </rule>
-      </grammar>
-        
-        <!-- Handle cases where there is no input received -->
-      <noinput>
-        <prompt>
-          I did not hear anything. Please try again.
-        </prompt>
-       <reprompt/>
-      </noinput>
-
-        <!-- Handle cases where there is no match -->
-      <nomatch>
-        <prompt>
-          I did not recognize that, please try again. 
-        </prompt>
-       <reprompt/>
-      </nomatch>
-
-    </field>
-    
-    <!-- Logic for deciding where to go next depending on the input -->
-    <filled>
-        <if cond="Language == 'english'">
-            <goto next="#English"/>
-        <elseif cond="Language == 'french'"/>
-            <goto next="#Sell"/>
-        <elseif cond="Language == 'danish'"/>
-            <goto next="#Sell"/>
-        </if>
-    </filled>
-  </form>
-  
-    <!-- End Language Selection Menu -->
-    
-    
-    
     <!-- English Top Menu: Select "Buy", "Sell", or "Get info on Co-ops" -->
     
     <form id="English">
@@ -196,16 +100,19 @@
 
   <!-- If the answer was "sell", it prompts the following statement. -->
   <form id="Sell">
-    <record name="message" beep="true" maxtime="60s">
+    <record name="message" beep="true" maxtime="30s">
             <prompt>Please leave your message after the beep, then press any key.</prompt>
         </record>
         <block>
             <prompt>Here's what you recorded <value expr="message"/>.</prompt>
         </block>
         <block>
-            <submit next="Record_Upload_HTTP_POST.php" enctype="multipart/form-data" method="post"/>
+            <!-- <submit next="Record_Upload_HTTP_POST.php" enctype="multipart/form-data" method="post"/> -->
+        
+        <submit next="/home/ubuntu/workspace/flask_init/milk.py" enctype="multipart/form-data" method="post"/>
+        
         </block>
-  </form>
+    </form>
 </vxml>
 
 

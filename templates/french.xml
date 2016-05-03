@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<vxml version="2.1" xmlns="http://www.w3.org/2001/vxml" xmlns:voxeo="http://community.voxeo.com/xmlns/vxml">
+
+<meta name="maintainer" content="askemailer@gmail.com"/>
+
+    <!-- English Top Menu: Select "Buy", "Sell", or "Get info on Co-ops" -->
+    
+    <form id="English">
+    <field name="EnglishOptions">
+      <prompt>
+        To buy milk say "buy", to sell milk say "sell", to hear about co-op opportunities say "opportunities".
+      </prompt>
+
+      <!-- Grammar for available responses for either "Buyer" or "Seller", or "Information Seeker". -->
+      <grammar xml:lang="en-US" root = "BUYORSELLORINFO">
+        <rule id="BUYORSELLORINFO" scope="public">
+         <one-of>
+             
+         <!-- If the user says any of the following choices, then the grammar assigns "buy" to the EnglishOptions variable.-->
+         <item>
+          <one-of>
+            <item>buy</item>
+          </one-of>
+          <tag>out.EnglishOptions ="buy";</tag>
+         </item>
+       
+         <!-- If the user says any of the following choices, then the grammar assigns "sell" to the EnglishOptions variable. -->
+         <item>
+          <one-of>
+            <item>sell</item>
+          </one-of>
+          <tag>out.EnglishOptions ="sell";</tag>
+         </item>
+         
+          <!-- If the user says any of the following choices, then the grammar assigns "information" to the EnglishOptions variable. -->
+         <item>
+          <one-of>
+            <item>information</item>
+          </one-of>
+          <tag>out.EnglishOptions ="information";</tag>
+         </item>
+      
+         </one-of>        
+        </rule>
+      </grammar>
+        
+      <!-- Handle cases where there is no input received -->
+      <noinput>
+        <prompt>
+          I did not hear anything. Please try again.
+        </prompt>
+       <reprompt/>
+      </noinput>
+
+        <!-- Handle cases where there is no match -->
+      <nomatch>
+        <prompt>
+          I did not recognize that, please try again. 
+        </prompt>
+       <reprompt/>
+      </nomatch>
+
+    </field>
+    
+    <!-- Logic for deciding where to go next depending on the input -->
+    <filled>
+        <if cond="EnglishOptions == 'buy'">
+            <goto next="#Buy"/>
+        <elseif cond="EnglishOptions == 'sell'"/>
+            <goto next="#Sell"/>
+        <elseif cond="EnglishOptions == 'information'"/>
+            <goto next="#Sell"/>
+        </if>
+    </filled>
+  </form>
+
+  <!-- If the answer was "buy", it prompts the following statement. -->
+  <form id="Buy">
+       <field name="BackToMain">
+      <prompt>
+      	Please listen to the following offerings by farmers    	
+      </prompt>
+      
+      {% for i in range(music_files_number) %}
+        
+        <audio src="/static/messages/{{ music_files[i] }}"> {{ i+1 }})</audio>
+    
+     {% endfor %}
+      
+      
+    <!-- <audio src="message-1461187125370.wav"> </audio> -->
+    </field>
+    <filled>
+    <!-- This will never get hit. -->
+    </filled>
+  </form>
+  
+
+  <!-- If the answer was "sell", it prompts the following statement. -->
+  <form id="Sell">
+    <record name="message" beep="true" maxtime="30s">
+            <prompt>Please leave your message after the beep, then press any key.</prompt>
+        </record>
+        <block>
+            <prompt>Here's what you recorded <value expr="message"/>.</prompt>
+        </block>
+        <block>
+            <!-- <submit next="Record_Upload_HTTP_POST.php" enctype="multipart/form-data" method="post"/> -->
+        
+        <submit next="/home/ubuntu/workspace/flask_init/milk.py" enctype="multipart/form-data" method="post"/>
+        
+        </block>
+    </form>
+</vxml>
+
+
