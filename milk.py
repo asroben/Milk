@@ -6,7 +6,7 @@ from flask import Flask, url_for, request, redirect, render_template
 # from werkzeug import secure_filename
 
 UPLOAD_FOLDER = '/var/www/KasaDaka/FlaskKasadaka/templates/flask_init/static/messages'
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'wav'])
+ALLOWED_EXTENSIONS = set(['wav'])
 
 messages_dir = '/var/www/KasaDaka/FlaskKasadaka/templates/flask_init/static/messages'
 
